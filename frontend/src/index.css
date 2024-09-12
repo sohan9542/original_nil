@@ -858,9 +858,24 @@ article.container::before {
   #MEDIA QUERIES
 \*----------------------------------- */
 
+
+@media only screen and (max-width: 768px) {
+  .login__child{
+    width: 90%;
+    height: auto;
+    
+  }
+
+  .login__child .search-field{
+    background: var(--surface);
+  }
+}
+
 /* > 768px */
 @media (min-width: 768px) {
 
+
+  
   .container {
     padding: 24px;
   }

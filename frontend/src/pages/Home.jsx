@@ -1,9 +1,11 @@
 
-import { useEffect } from "react";
-import { getUser } from "../../helpers/helper";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getUser, logout } from "../../helpers/helper";
+import { Link } from "react-router-dom";
+
 // import { updateWeatherNew } from "../../public/js/data";
 const Home = () => {
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
     useEffect(() => {
         // Dynamically add app.js
         const appScript = document.createElement('script');
@@ -34,19 +36,26 @@ const Home = () => {
         };
     }, []);
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     const getPage = async () => {
         const token = localStorage.getItem('atoken')
         if (!token) {
-            navigate('/login')
+            window.location.hash = '#/weather?lat=51.5073219&lon=-0.1276474'
         }
         else {
             const user = await getUser()
-            window.location.href = `#/weather?lat=${user?.latitude}&lon=${user?.longitude}`
+            setIsAuthenticated(true)
+            window.location.hash = `#/weather?lat=${user?.latitude}&lon=${user?.longitude}`
         }
     }
     useEffect(() => {
         getPage()
+        const refreshtoken = localStorage.getItem('refresh')
+        if (!refreshtoken) {
+            localStorage.setItem('refresh', 'yes')
+            window.location.reload()
+        }
+
 
     }, [])
 
@@ -106,6 +115,27 @@ const Home = () => {
                             <span className="m-icon">my_location</span>
                             <span className="span">Current Location</span>
                         </a>
+                        {!isAuthenticated ? <Link
+                            to="/login"
+                            className="btn-primary has-state"
+
+                        >
+                            <span className="m-icon">lock</span>
+                            <span className="span">Login</span>
+                        </Link> :
+                            <div
+                                style={{ cursor: 'pointer' }}
+                                className="btn-primary has-state"
+                                onClick={() => {
+                                    // logout()
+                                    localStorage.clear()
+                                    window.location.reload()
+
+                                }}
+                            >
+                                <span className="m-icon">logout</span>
+                                <span className="span">Logout</span>
+                            </div>}
                     </div>
                 </div>
             </header>
