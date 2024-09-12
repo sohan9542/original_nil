@@ -6,18 +6,26 @@
 
 "use strict";
 
+import { getUser } from "../../helpers/helper.js";
 import { updateWeather, error404 } from "./app.js";
-const defaultLocation = "#/weather?lat=51.5073219&lon=-0.1276474";
 
-const currentLocation = function () {
+
+const getPage = async () => {
+  const user = await getUser()
+  window.location.href = `#/weather?lat=${user?.latitude}&lon=${user?.longitude}`
+}
+
+export const currentLocation = function () {
   window.navigator.geolocation.getCurrentPosition(
     (res) => {
       const { latitude, longitude } = res.coords;
-
       updateWeather(`lat=${latitude}`, `lon=${longitude}`);
     },
     (err) => {
-      window.location.hash = defaultLocation;
+      console.error("Geolocation error:", err);
+      // Fallback to default location if geolocation fails
+      getPage()
+      checkHash(); // Force the route check after fallback
     }
   );
 };

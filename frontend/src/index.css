@@ -828,6 +828,32 @@ article.container::before {
   margin-block-start: 20px;
 }
 
+
+
+/* --------------------------------- */
+/* login page */
+/* -------------------------------- */
+
+
+.login__parent{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login__child{
+  width: 34%;
+  height: auto;
+}
+.login__child .mb{
+  margin-bottom: 20px;
+}
+
+.login__child input{
+  margin-bottom: 15px;
+}
+
 /*-----------------------------------*\
   #MEDIA QUERIES
 \*----------------------------------- */
